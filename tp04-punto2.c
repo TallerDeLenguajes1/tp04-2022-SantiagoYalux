@@ -3,83 +3,121 @@
 #include <ctype.h>
 #include <string.h>
 
-
-
-struct Tarea{
-    int TareaID; //Numerado en ciclo iterativo
+struct Tarea
+{
+    int TareaID; // Numerado en ciclo iterativo
     char *Descripcion;
-    int Duracion; //entre 10 - 100
+    int Duracion; // entre 10 - 100
+
 } typedef Tarea;
 
-struct Usuario{
-    int idUsuario;
-    char * NombreUsuario;
-    Tarea * Tareas;
-}typedef Usuario;
-
 int cantidadTareas();
-void leerTareas(Tarea ** tareas, int cantTareas);
-
+Tarea *insertarTareaRealizada(Tarea *ListaTareas, Tarea tareaRealizada);
+void leerTareas(Tarea **tareas, int cantidadTareas);
+void mostrarTareasRealizadasYpendientes(Tarea **tareasRealizadas, Tarea **tareasPendientes, int cantidadTareas);
 int main()
 {
-    
-    Usuario * nuevoUsuario = (Usuario *) malloc(sizeof(Usuario));
-    nuevoUsuario->idUsuario = 1;
-    nuevoUsuario->NombreUsuario = (char *) malloc(sizeof(char) * 100);
-    strcpy(nuevoUsuario->NombreUsuario, "Santiago");
-
-    printf("Hola %s cuantas tareas debes realizar, ingresalas \n", nuevoUsuario->NombreUsuario);
+    printf("Hola, cuantas tareas debes realizar, ingresalas \n");
     int cantTareas = cantidadTareas();
 
-
-    nuevoUsuario->Tareas = (Tarea * ) malloc(sizeof(Tarea) * cantTareas);
-
+    Tarea **tareas;
+    tareas = (Tarea *)malloc(sizeof(Tarea) * cantTareas);
+    Tarea **aux = tareas;
 
     for (int i = 0; i < cantTareas; i++)
     {
-        nuevoUsuario->Tareas->TareaID = i+1;
-        nuevoUsuario->Tareas->Duracion = 10 + i;
+        tareas[i] = (Tarea *)malloc(sizeof(Tarea));
+        tareas[i]->TareaID = i + 1;
+        tareas[i]->Descripcion = (char *)malloc(sizeof(char) * 150);
+        getchar();
+        printf("ingresa la descripcion de la tarea %d \n", i + 1);
+        scanf("%s", tareas[i]->Descripcion);
+        tareas[i]->Duracion = 10 + i;
     }
 
-
-        for (int i = 0; i < cantTareas; i++)
-    {
-        printf("\n-------Tarea numero %d-------\n", i+1);
-
-        nuevoUsuario->Tareas->TareaID = i+1;
-        printf("%d\n",nuevoUsuario->Tareas->TareaID);
-        nuevoUsuario->Tareas->Duracion = 10 + i;
-        printf("%d\n",nuevoUsuario->Tareas->Duracion);
-        
-        printf("--------------------------------");
-    }
-
-
-    
+    leerTareas(tareas, cantTareas);
 }
 
-int cantidadTareas(){
+int cantidadTareas()
+{
     int retorno = 0;
     scanf("%d", &retorno);
 
     return retorno;
 }
 
-void leerTareas(Tarea ** tareas, int cantTareas){
+void leerTareas(Tarea **tareas, int cantidadTareas)
+{
+    Tarea **aux = tareas;
 
-    Tarea ** aux = tareas;
+    Tarea **tareaRealizadas;
+    tareaRealizadas = (Tarea *)malloc(sizeof(Tarea) * cantidadTareas);
 
-    for (int i = 0; i < cantTareas; i++)
+
+    int realizada = 0;
+
+    for (int i = 0; i < cantidadTareas; i++)
     {
+        printf("\n---------Tarea numero %d---------\n", (i + 1));
 
-        printf("\n----Tarea = %d --------\n", aux[i]->TareaID);
+        printf("TAREA ID: %d \n", aux[i]->TareaID);
+        printf("DESCRIPCIÓN: %s \n", aux[i]->Descripcion);
+        printf("DURACIÓN: %d \n", aux[i]->Duracion);
 
-        printf("Descripcion = %s \n", aux[i]->Descripcion);
+        printf("Realizaste la tarea? 1-si 2-no\n");
+        scanf("%d", &realizada);
 
-        printf("Duracion %d", aux[i]->Duracion);
+        if (realizada == 1)
+        {
+            tareaRealizadas[i] = (Tarea *)malloc(sizeof(Tarea) * cantidadTareas);
+            tareaRealizadas[i]->TareaID = aux[i]->TareaID;
+            tareaRealizadas[i]->Descripcion = aux[i]->Descripcion;
+            tareaRealizadas[i]->Duracion = aux[i]->Duracion;
 
-        printf("\n------------------------------------");
+            aux[i] = NULL;
+        }
+        else
+        {
+            tareaRealizadas[i] = NULL;
+        }
+
+        printf("--------------------------------");
     }
-    
+
+    mostrarTareasRealizadasYpendientes(tareaRealizadas, aux, cantidadTareas);
 }
 
+void mostrarTareasRealizadasYpendientes(Tarea **tareasRealizadas, Tarea **tareasPendientes, int cantidadTareas)
+{
+    printf("*** MOSTRAR TAREAS REALIZADAS Y TAREAS PENDIENTES ***\n\n");
+    Tarea **auxRealizadas = tareasRealizadas;
+    Tarea **auxPendientes = tareasPendientes;
+
+    printf("\n-------------TAREAS REALIZADAS-------------\n");
+    for (int i = 0; i < cantidadTareas; i++)
+    {
+        if (auxRealizadas[i] != NULL)
+        {
+            printf("\n------------------\n");
+            printf("ID de tarea: %d\n", auxRealizadas[i]->TareaID);
+            printf("DESCRIPCIÓN: %s \n", auxRealizadas[i]->Descripcion);
+            printf("Duración de tarea%d\n", auxRealizadas[i]->Duracion);
+            printf("--------------------");
+        }
+    }
+    printf("\n");
+
+    printf("\n-------------TAREAS PENDIENTES-------------\n");
+    for (int i = 0; i < cantidadTareas; i++)
+    {
+        if (auxPendientes[i] != NULL)
+        {
+            printf("\n------------------\n");
+            printf("ID de tarea: %d\n", auxPendientes[i]->TareaID);
+            printf("DESCRIPCIÓN: %s \n", auxPendientes[i]->Descripcion);
+            printf("Duración de tarea: %d\n", auxPendientes[i]->Duracion);
+            printf("--------------------");
+        }
+    }
+    printf("\n");
+}

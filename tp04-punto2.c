@@ -24,7 +24,7 @@ int main()
     int cantTareas = cantidadTareas();
 
     Tarea **tareas;
-    tareas = (Tarea *)malloc(sizeof(Tarea) * cantTareas);
+    tareas = (Tarea **)malloc(sizeof(Tarea *) * cantTareas);
     Tarea **aux = tareas;
 
     for (int i = 0; i < cantTareas; i++)
@@ -38,7 +38,7 @@ int main()
         tareas[i]->Duracion = 10 + i;
     }
 
-    //leerTareas(tareas, cantTareas);
+    leerTareas(tareas, cantTareas);
     char * palabraClave = (char *) malloc(sizeof(char) * 100);
     printf("\nIngresa la palabra con la que buscaras la tarea\n");
     scanf("%s", palabraClave);
@@ -75,7 +75,7 @@ void leerTareas(Tarea **tareas, int cantidadTareas)
     Tarea **aux = tareas;
 
     Tarea **tareaRealizadas;
-    tareaRealizadas = (Tarea *)malloc(sizeof(Tarea) * cantidadTareas);
+    tareaRealizadas = (Tarea **)malloc(sizeof(Tarea *) * cantidadTareas);
 
 
     int realizada = 0;

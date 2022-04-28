@@ -12,9 +12,11 @@ struct Tarea
 } typedef Tarea;
 
 int cantidadTareas();
-Tarea *insertarTareaRealizada(Tarea *ListaTareas, Tarea tareaRealizada);
 void leerTareas(Tarea **tareas, int cantidadTareas);
 void mostrarTareasRealizadasYpendientes(Tarea **tareasRealizadas, Tarea **tareasPendientes, int cantidadTareas);
+Tarea * buscarTareaPorId(Tarea **tareasRealizadas, int idTarea, int cantidadTareas);
+
+
 int main()
 {
     printf("Hola, cuantas tareas debes realizar, ingresalas \n");
@@ -35,7 +37,15 @@ int main()
         tareas[i]->Duracion = 10 + i;
     }
 
-    leerTareas(tareas, cantTareas);
+    //leerTareas(tareas, cantTareas);
+    Tarea * tareaEntontrada = buscarTareaPorId(tareas, 1, cantTareas);
+    printf("\n-------ENCONTRADA-----------\n");
+    printf("ID de tarea: %d\n", tareaEntontrada->TareaID);
+    printf("DESCRIPCIÓN: %s \n", tareaEntontrada->Descripcion);
+    printf("Duración de tarea: %d\n", tareaEntontrada->Duracion);
+    printf("--------------------");
+
+
 }
 
 int cantidadTareas()
@@ -101,7 +111,7 @@ void mostrarTareasRealizadasYpendientes(Tarea **tareasRealizadas, Tarea **tareas
             printf("\n------------------\n");
             printf("ID de tarea: %d\n", auxRealizadas[i]->TareaID);
             printf("DESCRIPCIÓN: %s \n", auxRealizadas[i]->Descripcion);
-            printf("Duración de tarea%d\n", auxRealizadas[i]->Duracion);
+            printf("Duración de tarea: %d\n", auxRealizadas[i]->Duracion);
             printf("--------------------");
         }
     }
@@ -120,4 +130,14 @@ void mostrarTareasRealizadasYpendientes(Tarea **tareasRealizadas, Tarea **tareas
         }
     }
     printf("\n");
+}
+
+Tarea * buscarTareaPorId(Tarea **tareasRealizadas, int idTarea, int cantidadTareas)
+{
+    for (int i = 0; i < cantidadTareas; i++)
+    {
+        if(tareasRealizadas[i]->TareaID == idTarea){
+            return tareasRealizadas[i];
+        }
+    }
 }

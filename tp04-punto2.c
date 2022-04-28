@@ -50,8 +50,9 @@ int main()
 
     
     int idTareaBuscar = 0;
-    
-    Tarea * tareaEntontrada = buscarTareaPorId(tareas, 1, cantTareas);
+    printf("\nBusca una tarea a partir de su Id: \n");
+    scanf("%d", &idTareaBuscar);
+    Tarea * tareaEntontrada = buscarTareaPorId(tareas, idTareaBuscar, cantTareas);
     printf("\n-------ENCONTRADA-----------\n");
     printf("ID de tarea: %d\n", tareaEntontrada->TareaID);
     printf("DESCRIPCIÓN: %s \n", tareaEntontrada->Descripcion);

@@ -15,6 +15,8 @@ int cantidadTareas();
 Tarea *insertarTareaRealizada(Tarea *ListaTareas, Tarea tareaRealizada);
 void leerTareas(Tarea **tareas, int cantidadTareas);
 void mostrarTareasRealizadasYpendientes(Tarea **tareasRealizadas, Tarea **tareasPendientes, int cantidadTareas);
+Tarea * buscarTareaPorId(Tarea **tareasRealizadas, char * PalabraClave, int cantidadTareas);
+
 int main()
 {
     printf("Hola, cuantas tareas debes realizar, ingresalas \n");
@@ -35,7 +37,16 @@ int main()
         tareas[i]->Duracion = 10 + i;
     }
 
-    leerTareas(tareas, cantTareas);
+    //leerTareas(tareas, cantTareas);
+    char * palabraClave = (char *) malloc(sizeof(char) * 100);
+    printf("\nIngresa la palabra con la que buscaras la tarea\n");
+    scanf("%s", palabraClave);
+    Tarea * tareaEncontrada = buscarTareaPorId(tareas, palabraClave, cantTareas);
+    printf("\n--------------TAREA ENCONTRADA-------------\n");
+    printf("TAREA ID: %d \n", tareaEncontrada->TareaID);
+    printf("DESCRIPCIÓN: %s \n", tareaEncontrada->Descripcion);
+    printf("DURACIÓN: %d \n", tareaEncontrada->Duracion);
+
 }
 
 int cantidadTareas()
@@ -120,4 +131,15 @@ void mostrarTareasRealizadasYpendientes(Tarea **tareasRealizadas, Tarea **tareas
         }
     }
     printf("\n");
+}
+
+Tarea * buscarTareaPorId(Tarea **tareasRealizadas, char * PalabraClave, int cantidadTareas)
+{
+    for (int i = 0; i < cantidadTareas; i++)
+    {
+        if(!(strcmp(tareasRealizadas[i]->Descripcion, PalabraClave))){
+            return tareasRealizadas[i];
+        }
+    }
+    
 }
